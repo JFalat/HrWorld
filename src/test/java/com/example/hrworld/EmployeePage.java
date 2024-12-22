@@ -13,6 +13,7 @@ public class EmployeePage {
 
     // Locator for table rows
     private By tableRowLocator = By.xpath("//div[@class='oxd-table']//div[@role='row']");
+    private By employeeNameColumnLocator = By.xpath(".//div[@class='header' and text()='Employee Name']/following-sibling::div[@class='data']");
 
 
     public EmployeePage(WebDriver driver) {
@@ -38,14 +39,24 @@ public class EmployeePage {
     }
     public List<String> getEmployeesFirstName() {
 
-        List<WebElement> employeesFirstName = driver.findElements(By.xpath("(//div[@class='oxd-table']//div[@role='row'])[1]"));
-        List<String> employeesList = employeesFirstName.stream()
-                .map(WebElement::getText)
+        // Pobranie wszystkich wierszy tabeli
+        List<WebElement> tableRows = driver.findElements(tableRowLocator);
+
+        List<String> employeeFirstNames = tableRows.stream()
+                .map(row -> {
+                    try {
+                        WebElement nameCell = row.findElement(employeeNameColumnLocator);
+                        String fullName = nameCell.getText();
+                        return fullName.split(" ")[0];
+                    } catch (NoSuchElementException e) {
+                        return ""; // Ignoruj wiersze bez danych
+                    }
+                })
+                .filter(name -> !name.isEmpty())
                 .collect(Collectors.toList());
-        // Wypisanie listy w konsoli
-        System.out.println(employeesList);
-        // Zwrócenie listy
-        return employeesList;
+
+        System.out.println(employeeFirstNames);
+        return employeeFirstNames;
     }
     public List<String> getUserRole() {
 

@@ -4,6 +4,8 @@ import com.example.hrworld.BaseTest;
 import com.example.hrworld.LoginPage;
 import com.example.hrworld.MainPage;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeTest extends BaseTest {
@@ -23,10 +25,12 @@ public class EmployeeTest extends BaseTest {
 
         // Fetch first names from the Employee Page
         EmployeePage employeePage = new EmployeePage(driver);
+        List<String> allEmployees = employeePage.getEmployeesList();
+        System.out.println(allEmployees);
         List<String> firstName = employeePage.getEmployeesFirstName();
-        List<String> userName = employeePage.getEmployeesName();
-//        System.out.println(firstName);
-        System.out.println(userName);
+//        List<String> userName = employeePage.getEmployeesName();
+        System.out.println(firstName);
+//        System.out.println(userName);
 
     }
 }
