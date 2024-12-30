@@ -7,35 +7,17 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class EmployeePage {
     private WebDriver driver;
 
-    // Lokatory dla tabeli, wierszy oraz kolumn
-    private By tableRowLocator = By.xpath("//div[@class='oxd-table']//div[@role='row']");
-    private By employeeNameColumnLocator = By.xpath("//div[@class='oxd-table-card-cell']//div[contains(@class, 'data')]");
-    private By roleColumnLocator = By.xpath("//div[@class='oxd-table-card-cell']//div[contains(@class, 'header') and text()='User Role']/following-sibling::div");
-//    private By searchInputLocator = By.xpath("//input[contains(@class, 'oxd-input') and contains(@class, 'oxd-input--active')]");
+
+
 // Zlokalizowanie elementu typu WebElement
     private By searchInput = By.xpath("//div[contains(@class, 'oxd-grid-item oxd-grid-item--gutters')]//input[contains(@class, 'oxd-input oxd-input--active')]");
-//    private By searchInputLocator = By.xpath("//div[contains(@class, 'oxd-grid-item oxd-grid-item--gutters')]//input[@placeholder='Type for hints...']");
     private By firstNameCellLocator = By.xpath(".//div[contains(@class, 'oxd-table-body')]//div[2]/div");
-
-    public String getFirstNameFromTable() {
-        WebElement firstNameCell = driver.findElement(firstNameCellLocator);
-        String firstName1 = firstNameCell.getText().trim();
-        return firstName1;
-
-
-    }
-
-    private By firstDivLocator = By.xpath(".//div[contains(@class, 'oxd-table-cell oxd-padding-cell')]//div[1]");
-
-    // Lokator dla listy sugestii (np. by zlokalizować wszystkie sugerowane opcje)
-    private By suggestionsLocator = By.xpath("//div[contains(@class, 'oxd-autocomplete-dropdown') and contains(@class, '--position-bottom') and @role='listbox']");
     private By firstRow = By.xpath("(//div[@class='oxd-table']//div[@role='row'])[1]");
-    private By inputElement = By.xpath("//input[@class='oxd-input oxd-input--active']");
     private By searchButton = By.xpath("//div[contains(@class, 'oxd-table-filter-area')]//button[contains(@class, 'oxd-button--secondary')]");
 
     // Konstruktor
@@ -53,6 +35,11 @@ public class EmployeePage {
             System.out.println("Element not found: " + e.getMessage());
             return "";
         }
+    }
+    public String getFirstNameFromTable() {
+        WebElement firstNameCell = driver.findElement(firstNameCellLocator);
+        String firstName1 = firstNameCell.getText().trim();
+        return firstName1;
     }
 
     // Pobierz listę imion pracowników
@@ -112,30 +99,6 @@ public class EmployeePage {
         return userRoles;
     }
 
-    // Metoda wyszukiwania po imieniu i wybierania sugestii
-//    public void enterFirstNameAndSelectSuggestion(String firstName) {
-//        // Zlokalizowanie pola tekstowego
-//        WebElement searchInput = driver.findElement(searchInputLocator);
-//
-//        // Wpisanie wartości w pole wyszukiwania
-//        searchInput.clear();  // Czyszczenie poprzednich danych
-//        searchInput.sendKeys(firstName);
-//
-//        // Oczekiwanie na pojawienie się sugestii
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(suggestionsLocator));
-//
-//        // Zlokalizowanie wszystkich sugestii
-//        List<WebElement> suggestions = driver.findElements(suggestionsLocator);
-//
-//        // Sprawdzenie, czy są dostępne sugestie
-//        if (!suggestions.isEmpty()) {
-//            // Kliknięcie na pierwszą sugestię
-//            suggestions.get(0).click();
-//        } else {
-//            System.out.println("Brak sugestii do wyboru");
-//        }
-//    }
     public void enterName(String firstName) {
         try {
             // Czekanie na widoczność pola tekstowego, aby upewnić się, że możemy kliknąć
