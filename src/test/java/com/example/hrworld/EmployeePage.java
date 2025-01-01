@@ -52,6 +52,7 @@ public class EmployeePage {
         }
         return rowData; // Zwraca listę danych
     }
+
 }
     //pobierz cala liste
 //    public List<String> getAllEmployees() {

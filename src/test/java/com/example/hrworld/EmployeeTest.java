@@ -39,6 +39,7 @@ public class EmployeeTest extends BaseTest {
         // Przykład asercji - sprawdzamy, czy lista nie jest pusta
         assertThat(employeeData).isNotEmpty(); // Sprawdza, czy lista zawiera jakieś dane
     }
+
 //        employeePage.enterName(firstName);
 //        employeePage.clickSearchButton();
 //        String firstNameFromRow = String.valueOf(employeePage.getFirstNameFromTable());
