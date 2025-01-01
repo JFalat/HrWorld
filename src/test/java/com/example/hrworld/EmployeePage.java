@@ -22,7 +22,10 @@ public class EmployeePage {
     private By WholeTable = By.xpath("//div[contains(@class, 'oxd-table') and @role='table'] ");
     private By OneRow = By.xpath("//div[contains(@class,'oxd-table-card')]");
     private By OneColumn = By.xpath(".//div[contains(@class,'oxd-table-cell oxd-padding-cell')]/*");
-
+    private By UsernameColumn = By.xpath(".//div[contains(@class,'oxd-table-cell oxd-padding-cell')]/*[2]"); // Username
+    private By UserRoleColumn = By.xpath(".//div[contains(@class,'oxd-table-cell oxd-padding-cell')]/*[3]"); // User Role
+    private By EmployeeNameColumn = By.xpath(".//div[contains(@class,'oxd-table-cell oxd-padding-cell')]/*[4]"); // Employee Name
+    private By StatusColumn = By.xpath(".//div[contains(@class,'oxd-table-cell oxd-padding-cell')]/*[5]"); // Status
     // Konstruktor
     public EmployeePage(WebDriver driver) {
         this.driver = driver;
@@ -31,8 +34,8 @@ public class EmployeePage {
 //        this.driver = driver;
 //    }
 
-    public List<String> iterateTable() {
-        List<String> rowData = new ArrayList<>();
+    public List<Employee> iterateTable() {
+        List<Employee> employeeList = new ArrayList<>();
 
         // Znajdź całą tabelę
         WebElement table = driver.findElement(WholeTable);
@@ -42,18 +45,23 @@ public class EmployeePage {
 
         // Iteruj po wierszach
         for (WebElement row : rows) {
-            // Znajdź wszystkie kolumny w danym wierszu
-            List<WebElement> columns = row.findElements(OneColumn);
+            // Pobierz dane z poszczególnych kolumn
+            String username = row.findElement(UsernameColumn).getText().trim();
+            String userRole = row.findElement(UserRoleColumn).getText().trim();
+            String employeeName = row.findElement(EmployeeNameColumn).getText().trim();
+            String status = row.findElement(StatusColumn).getText().trim();
 
-            // Iteruj po kolumnach i dodaj tekst do listy
-            for (WebElement column : columns) {
-                rowData.add(column.getText().trim()); // Zbiera dane z komórek
-            }
+            // Tworzenie obiektu Employee
+            Employee employee = new Employee(username, userRole, employeeName, status);
+
+            // Dodaj obiekt do listy
+            employeeList.add(employee);
         }
-        return rowData; // Zwraca listę danych
-    }
 
+        return employeeList; // Zwróć listę obiektów
+    }
 }
+
     //pobierz cala liste
 //    public List<String> getAllEmployees() {
 //        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));

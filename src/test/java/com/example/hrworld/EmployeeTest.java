@@ -29,17 +29,16 @@ public class EmployeeTest extends BaseTest {
 
 
         // Pobieramy imię pracownika na podstawie indeksu
-        List<String> employeeData = employeePage.iterateTable();
+        List<Employee> employeeList = employeePage.iterateTable();
 
-        // Wypisz dane dla wizualizacji
-        for (String data : employeeData) {
-            System.out.println(data);
+        // Wypisanie danych o pracownikach
+        for (Employee employee : employeeList) {
+            System.out.println(employee);  // Wypisuje obiekt Employee
         }
 
-        // Przykład asercji - sprawdzamy, czy lista nie jest pusta
-        assertThat(employeeData).isNotEmpty(); // Sprawdza, czy lista zawiera jakieś dane
+        // Przykład asercji - sprawdzamy, czy lista pracowników nie jest pusta
+        assertThat(employeeList).isNotEmpty();
     }
-
 //        employeePage.enterName(firstName);
 //        employeePage.clickSearchButton();
 //        String firstNameFromRow = String.valueOf(employeePage.getFirstNameFromTable());
