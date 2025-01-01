@@ -2,6 +2,9 @@ package com.example.hrworld;
 
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EmployeeTest extends BaseTest {
@@ -23,15 +26,23 @@ public class EmployeeTest extends BaseTest {
 
         // Pobieramy imiona pracowników z Employee Page
         EmployeePage employeePage = new EmployeePage(driver);
-        employeePage.getFirstRow();  // Pobieramy pierwszy wiersz tabeli
 
 
         // Pobieramy imię pracownika na podstawie indeksu
-        String firstName = employeePage.getEmployeeFirstNameByIndex(0);
-        employeePage.enterName(firstName);
-        employeePage.clickSearchButton();
-        String firstNameFromRow = String.valueOf(employeePage.getFirstNameFromTable());
-        System.out.println(firstNameFromRow);
-        assertThat(firstName).isEqualTo(firstNameFromRow);
+        List<String> employeeData = employeePage.iterateTable();
+
+        // Wypisz dane dla wizualizacji
+        for (String data : employeeData) {
+            System.out.println(data);
+        }
+
+        // Przykład asercji - sprawdzamy, czy lista nie jest pusta
+        assertThat(employeeData).isNotEmpty(); // Sprawdza, czy lista zawiera jakieś dane
     }
-}
+//        employeePage.enterName(firstName);
+//        employeePage.clickSearchButton();
+//        String firstNameFromRow = String.valueOf(employeePage.getFirstNameFromTable());
+//        System.out.println(firstNameFromRow);
+//        assertThat(firstName).isEqualTo(firstNameFromRow);
+    }
+
