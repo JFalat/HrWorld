@@ -1,6 +1,9 @@
 package com.example.hrworld;
 
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.lang.reflect.Array;
 import java.util.List;
@@ -26,7 +29,7 @@ public class EmployeeTest extends BaseTest {
 
         // Pobieramy imiona pracowników z Employee Page
         EmployeePage employeePage = new EmployeePage(driver);
-        List<Employee> employeeList = employeePage.getEmployees();
+        List<Employee> employeeList = employeePage.getEmployeesStream();
 
         // Wypisanie danych o pracownikach
         for (Employee employee : employeeList) {
@@ -44,10 +47,10 @@ public class EmployeeTest extends BaseTest {
 
         // Klikamy przycisk wyszukiwania
         employeePage.clickSearchButton();
+        List<WebElement> icons = employeePage.getIcons();
+        System.out.println(icons.size());
+        assertThat(icons).hasSize(2);
 
-        // Dodatkowa asercja, sprawdzenie, czy pierwsze imię z listy zgadza się z danymi na stronie
-        // (w zależności od aplikacji, możesz dodać metodę do pobrania wartości z tabeli)
-//         String firstNameFromRow = String.valueOf(employeePage.getFirstNameFromTable());
-//         assertThat(firstName).isEqualTo(firstNameFromRow);
+
     }
 }
