@@ -203,31 +203,39 @@ public class EmployeePage {
         // Wybieranie statusu
         WebElement Userrole = lokator(driver).get(1);
         Userrole.click();  // Kliknij, aby rozwinąć listę
-        
+
 //        WebElement option1 = wait.until(ExpectedConditions.elementToBeClickable(
 //                By.xpath("//div[contains(@class, 'oxd-select-dropdown')]/div/span[contains(text(), 'Admin')]")
 
         // Wybieranie statusu z rozwijanej listy
 
+        WebElement suggestionList1 = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(@class, 'oxd-select-text-input')]")
+                // Zmienna XPath zależnie od struktury HTML
+        ));
+        System.out.println(suggestionList1);
+        List<WebElement> children1 = suggestionList1.findElements(By.xpath("./li"));
+        System.out.println(children1);
+//
+//        for (WebElement option1 : children1) {
+//            System.out.println(option1.getText()); // Zwróci tekst wszystkich opcji w rozwijanej liście
+//        }
 //        try {
 //            Thread.sleep(5000);
 //        } catch (InterruptedException e) {
 //            throw new RuntimeException(e);
 //        }
-//        WebElement suggestionList1 = wait.until(ExpectedConditions.visibilityOfElementLocated(
-//                By.xpath("//div[contains(@class, 'oxd-select-dropdown --positon-bottom')]") // Zmienna XPath zależnie od struktury HTML
-//        ));
-//        List<WebElement> children1 = suggestionList1.findElements(By.xpath("./div"));
 //
-//        for (WebElement option1 : children1) {
-//            System.out.println(option.getText()); // Zwróci tekst wszystkich opcji w rozwijanej liście
-//        }
-//
-//// Kliknięcie na pierwszą opcję z listy
-//        if (!children1.isEmpty()) {
+////// Kliknięcie na pierwszą opcję z listy
+//       if (!children1.isEmpty()) {
 //            children1.get(0).click(); // Kliknij pierwszą opcję
 //        }
-
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+//
 //        WebElement statusOption = driver.findElement(By.xpath("//div[@class='oxd-select-text-input' and contains(text(), 'Enabled')]"));
 //        statusOption.click();
     }
@@ -246,6 +254,11 @@ public class EmployeePage {
             // Teraz czekamy na dostępność elementu 'Enabled' w rozwijanej liście
             WebElement enabledOption = wait.until(ExpectedConditions.elementToBeClickable(
                     By.xpath("//div[@class='oxd-select-dropdown']//span[contains(text(), 'Enabled')]")));
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
             // Klikamy na opcję 'Enabled'
             enabledOption.click();
