@@ -31,23 +31,23 @@ public class EmployeePage {
 
     public void enterUserData(WebDriver driver) throws InterruptedException {
         // Wypełnienie danych użytkownika
-        TextField.enterAdminWithRandomNumber(driver, id);  // Zamiast wpisywać "admin", teraz generujemy losowy login
-        TextField.enterText(driver, "Password", password);
-        TextField.enterText(driver, "Password", repeatedPassword);
-        TextField.enterText(driver, "John", firstName);
-        TextField.enterText(driver, "Doe", lastName);
-        TextField.enterText(driver, "john.doe@example.com", email);
-        TextField.enterText(driver, "123456789", phone);
-        TextField.enterText(driver, "123 Main St", address1);
-        TextField.enterText(driver, "123 Main St", address2);  // Wypełnienie pola adresowego// Wypełnienie pola adresowego
-        TextField.enterText(driver, "Wwa", city);
-        TextField.enterText(driver,"Mazowieckie", state);
-        TextField.enterText(driver, "05-400", zip);
-        TextField.enterText(driver, "Polska", country);
-        SelectClass.selectOptionByValue(driver, favouriteCategory,"FISH");
-        SelectClass.selectOptionByValue(driver, languageSelector, "english");
-        CheckboxHelper.checkCheckbox(driver, enable_MyList);
-        CheckboxHelper.checkCheckbox(driver, enable_MyBanner);
+        Kontrolki.enterAdminWithRandomNumber(driver, id);  // Zamiast wpisywać "admin", teraz generujemy losowy login
+        Kontrolki.enterText(driver, "Password", password);
+        Kontrolki.enterText(driver, "Password", repeatedPassword);
+        Kontrolki.enterText(driver, "John", firstName);
+        Kontrolki.enterText(driver, "Doe", lastName);
+        Kontrolki.enterText(driver, "john.doe@example.com", email);
+        Kontrolki.enterText(driver, "123456789", phone);
+        Kontrolki.enterText(driver, "123 Main St", address1);
+        Kontrolki.enterText(driver, "123 Main St", address2);  // Wypełnienie pola adresowego// Wypełnienie pola adresowego
+        Kontrolki.enterText(driver, "Wwa", city);
+        Kontrolki.enterText(driver,"Mazowieckie", state);
+        Kontrolki.enterText(driver, "05-400", zip);
+        Kontrolki.enterText(driver, "Polska", country);
+        Kontrolki.selectOptionByValue(driver, favouriteCategory,"FISH");
+        Kontrolki.selectOptionByValue(driver, languageSelector, "english");
+        Kontrolki.checkCheckbox(driver, enable_MyList);
+        Kontrolki.checkCheckbox(driver, enable_MyBanner);
         // Kliknięcie przycisku "Create Account"
         try {
             Thread.sleep(20000);
