@@ -31,30 +31,30 @@ public class EmployeePage {
 
     public void enterUserData(WebDriver driver) throws InterruptedException {
         // Wypełnienie danych użytkownika
-        BasePage.enterAdminWithRandomNumber(driver, id);  // Zamiast wpisywać "admin", teraz generujemy losowy login
-        BasePage.enterText(driver, "Password", password);
-        BasePage.enterText(driver, "Password", repeatedPassword);
-        BasePage.enterText(driver, "John", firstName);
-        BasePage.enterText(driver, "Doe", lastName);
-        BasePage.enterText(driver, "john.doe@example.com", email);
-        BasePage.enterText(driver, "123456789", phone);
-        BasePage.enterText(driver, "123 Main St", address1);
-        BasePage.enterText(driver, "123 Main St", address2);  // Wypełnienie pola adresowego// Wypełnienie pola adresowego
-        BasePage.enterText(driver, "Wwa", city);
-        BasePage.enterText(driver,"Mazowieckie", state);
-        BasePage.enterText(driver, "05-400", zip);
-        BasePage.enterText(driver, "Polska", country);
-        BasePage.selectOptionByValue(driver, favouriteCategory,"FISH");
-        BasePage.selectOptionByValue(driver, languageSelector, "english");
-        BasePage.checkCheckbox(driver, enable_MyList);
-        BasePage.checkCheckbox(driver, enable_MyBanner);
+        BasePage basePage = new BasePage(driver);
+        basePage.enterAdminWithRandomNumber(id);  // Zamiast wpisywać "admin", teraz generujemy losowy login
+        basePage.enterText("Password", password);
+        basePage.enterText("Password", repeatedPassword);
+        basePage.enterText("John", firstName);
+        basePage.enterText("Doe", lastName);
+        basePage.enterText("john.doe@example.com", email);
+        basePage.enterText("123456789", phone);
+        basePage.enterText("123 Main St", address1);
+        basePage.enterText("123 Main St", address2);  // Wypełnienie pola adresowego// Wypełnienie pola adresowego
+        basePage.enterText("Wwa", city);
+        basePage.enterText("Mazowieckie", state);
+        basePage.enterText("05-400", zip);
+        basePage.enterText("Polska", country);
+        basePage.selectOptionByValue(favouriteCategory,"FISH");
+        basePage.selectOptionByValue(languageSelector, "english");
+        basePage.checkCheckbox(enable_MyList);
+        basePage.checkCheckbox(enable_MyBanner);
         // Kliknięcie przycisku "Create Account"
         try {
             Thread.sleep(20000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        WebElement submitBtn = driver.findElement(submitButton);
-        submitBtn.click();
+       basePage.click(submitButton);
     }
 }

@@ -16,42 +16,42 @@ public class BasePage {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
-    public static void selectOptionByValue(WebDriver driver, By locator, String value) {
+    public void selectOptionByValue(By locator, String value) {
         WebElement dropdownElement = driver.findElement(locator);
         Select dropdown = new Select(dropdownElement);
         dropdown.selectByValue(value);
     }
 
-    public static void selectOptionByVisibleText(WebDriver driver, By locator, String visibleText) {
+    public void selectOptionByVisibleText(By locator, String visibleText) {
         WebElement dropdownElement = driver.findElement(locator);
         Select dropdown = new Select(dropdownElement);
         dropdown.selectByVisibleText(visibleText);
     }
 
-    public static void selectOptionByIndex(WebDriver driver, By locator, int index) {
+    public void selectOptionByIndex(By locator, int index) {
         WebElement dropdownElement = driver.findElement(locator);
         Select dropdown = new Select(dropdownElement);
         dropdown.selectByIndex(index);
     }
-    public static void checkCheckbox(WebDriver driver, By locator) {
+    public void checkCheckbox(By locator) {
         WebElement checkbox = driver.findElement(locator);
         if (!checkbox.isSelected()) {
             checkbox.click();  // Zaznacza checkbox
         }
     }
     // Metoda do odznaczenia checkboxa, jeśli jest zaznaczony
-    public static void uncheckCheckbox(WebDriver driver, By locator) {
+    public void uncheckCheckbox(By locator) {
         WebElement checkbox = driver.findElement(locator);
         if (checkbox.isSelected()) {
             checkbox.click();  // Odznacza checkbox
         }
     }
     // Metoda do przełączania stanu checkboxa (jeśli jest zaznaczony, odznacza; jeśli jest odznaczony, zaznacza)
-    public static void toggleCheckbox(WebDriver driver, By locator) {
+    public void toggleCheckbox(By locator) {
         WebElement checkbox = driver.findElement(locator);
         checkbox.click();  // Przełącza stan checkboxa
     }
-    public static void enterText(WebDriver driver, String text, By locator) {
+    public void enterText(String text, By locator) {
         try {
             // Tworzymy WebDriverWait, aby poczekać na widoczność elementu
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // Czekaj do 10 sekund
@@ -71,10 +71,13 @@ public class BasePage {
             System.out.println("Failed to enter text. Error: " + e.getMessage());
         }
     }
-    public static void enterAdminWithRandomNumber(WebDriver driver, By locator) {
+    public  void enterAdminWithRandomNumber(By locator) {
         Random rand = new Random();
         int randomNumber = rand.nextInt(900) + 100;  // Generowanie liczby od 100 do 999
         String username = "admin" + randomNumber;  // Tworzenie ciągu "adminXXX"
-        enterText(driver, username, locator);  // Wpisanie tekstu w pole
+        enterText(username, locator);  // Wpisanie tekstu w pole
+    }
+    public void click(By locator) {
+        driver.findElement(locator).click();
     }
 }

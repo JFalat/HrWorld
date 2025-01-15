@@ -9,7 +9,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 
 public class LoginPage extends BasePage {
-        private WebDriver driver;
     // Poczekaj, aż strona się załaduje
         @FindBy(name = "username")
         private WebElement usernameField;
