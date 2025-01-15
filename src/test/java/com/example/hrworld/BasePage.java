@@ -10,12 +10,13 @@ import java.util.Random;
 
 public class BasePage {
     protected WebDriver driver;
-    private WebDriverWait wait;
+    protected WebDriverWait wait;
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
+
     public void selectOptionByValue(By locator, String value) {
         WebElement dropdownElement = driver.findElement(locator);
         Select dropdown = new Select(dropdownElement);
@@ -71,12 +72,7 @@ public class BasePage {
             System.out.println("Failed to enter text. Error: " + e.getMessage());
         }
     }
-    public  void enterAdminWithRandomNumber(By locator) {
-        Random rand = new Random();
-        int randomNumber = rand.nextInt(900) + 100;  // Generowanie liczby od 100 do 999
-        String username = "admin" + randomNumber;  // Tworzenie ciągu "adminXXX"
-        enterText(username, locator);  // Wpisanie tekstu w pole
-    }
+
     public void click(By locator) {
         driver.findElement(locator).click();
     }

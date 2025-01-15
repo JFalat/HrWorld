@@ -3,9 +3,15 @@ package com.example.hrworld;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class EmployeePage {
-    private WebDriver driver;
-    private WebDriverWait wait;
+import java.time.Duration;
+import java.util.Random;
+
+public class EmployeePage extends BasePage {
+
+
+    public EmployeePage(WebDriver driver) {
+        super(driver);  // Wywołanie konstruktora klasy nadrzędnej
+    }
 
     // Zlokalizowanie elementów typu WebElement
     private By id = By.name("username");
@@ -20,41 +26,52 @@ public class EmployeePage {
     private By city = By.name("account.city");  // Nowe pole adresowe
     private By state = By.name("account.state");  // Nowe pole adresowe
     private By zip = By.name("account.zip");
-    private By country = By.name("account.country");// Nowe pole adresowe
-    // Nowe pole adresowe
+    private By country = By.name("account.country");  // Nowe pole adresowe
     private By favouriteCategory = By.name("account.favouriteCategoryId");
     private By languageSelector = By.name("account.languagePreference");
     private By submitButton = By.name("newAccount");
-    By enable_MyList = By.cssSelector("input[type='checkbox'][name='account.listOption']");
-    By enable_MyBanner = By.cssSelector("input[type='checkbox'][name='account.bannerOption']");
+    private By enable_MyList = By.cssSelector("input[type='checkbox'][name='account.listOption']");
+    private By enable_MyBanner = By.cssSelector("input[type='checkbox'][name='account.bannerOption']");
+    private By signInLink = By.linkText("Sign In");
+    private By registrationLink = By.linkText("Register Now!");
 
 
-    public void enterUserData(WebDriver driver) throws InterruptedException {
+    public void clickSignIn() {
+        WebElement signIn = driver.findElement(signInLink);
+        signIn.click();
+    }
+
+    public void clickRegistration() {
+        WebElement registration = driver.findElement(registrationLink);
+        registration.click();
+    }
+
+    public void enterAdminWithRandomNumber(By locator) {
+        Random rand = new Random();
+        int randomNumber = rand.nextInt(900) + 100;  // Generowanie liczby od 100 do 999
+        String username = "admin" + randomNumber;  // Tworzenie ciągu "adminXXX"
+        enterText(username, locator);  // Wpisanie tekstu w pole
+    }
+
+    public void enterUserData() throws InterruptedException {
         // Wypełnienie danych użytkownika
-        BasePage basePage = new BasePage(driver);
-        basePage.enterAdminWithRandomNumber(id);  // Zamiast wpisywać "admin", teraz generujemy losowy login
-        basePage.enterText("Password", password);
-        basePage.enterText("Password", repeatedPassword);
-        basePage.enterText("John", firstName);
-        basePage.enterText("Doe", lastName);
-        basePage.enterText("john.doe@example.com", email);
-        basePage.enterText("123456789", phone);
-        basePage.enterText("123 Main St", address1);
-        basePage.enterText("123 Main St", address2);  // Wypełnienie pola adresowego// Wypełnienie pola adresowego
-        basePage.enterText("Wwa", city);
-        basePage.enterText("Mazowieckie", state);
-        basePage.enterText("05-400", zip);
-        basePage.enterText("Polska", country);
-        basePage.selectOptionByValue(favouriteCategory,"FISH");
-        basePage.selectOptionByValue(languageSelector, "english");
-        basePage.checkCheckbox(enable_MyList);
-        basePage.checkCheckbox(enable_MyBanner);
-        // Kliknięcie przycisku "Create Account"
-        try {
-            Thread.sleep(20000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-       basePage.click(submitButton);
+        enterAdminWithRandomNumber(id);  // Zamiast wpisywać "admin", teraz generujemy losowy login
+        enterText("Password", password);
+        enterText("Password", repeatedPassword);
+        enterText("John", firstName);
+        enterText("Doe", lastName);
+        enterText("john.doe@example.com", email);
+        enterText("123456789", phone);
+        enterText("123 Main St", address1);
+        enterText("123 Main St", address2);  // Wypełnienie pola adresowego
+        enterText("Wwa", city);
+        enterText("Mazowieckie", state);
+        enterText("05-400", zip);
+        enterText("Polska", country);
+        selectOptionByValue(favouriteCategory, "FISH");
+        selectOptionByValue(languageSelector, "english");
+        checkCheckbox(enable_MyList);
+        checkCheckbox(enable_MyBanner);
+        click(submitButton);
     }
 }

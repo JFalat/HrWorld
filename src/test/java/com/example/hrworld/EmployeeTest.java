@@ -11,15 +11,10 @@ public class EmployeeTest extends BaseTest {
         driver.get("https://przyklady.javastart.pl/jpetstore/actions/Catalog.action");
 
         // Tworzenie obiektu strony
-        Registration registration = new Registration(driver);
-
-        // Kliknij w link "Sign In"
-        registration.clickSignIn();
-        registration.clickRegistration();
-
-        EmployeePage employeePage = new EmployeePage();
-        employeePage.enterUserData(driver);
-
+        EmployeePage employeePage = new EmployeePage(driver);
+        employeePage.clickSignIn();
+        employeePage.clickRegistration();
+        employeePage.enterUserData();
 
         Thread.sleep(2000);
 
