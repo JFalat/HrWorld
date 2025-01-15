@@ -31,23 +31,23 @@ public class EmployeePage {
 
     public void enterUserData(WebDriver driver) throws InterruptedException {
         // Wypełnienie danych użytkownika
-        Kontrolki.enterAdminWithRandomNumber(driver, id);  // Zamiast wpisywać "admin", teraz generujemy losowy login
-        Kontrolki.enterText(driver, "Password", password);
-        Kontrolki.enterText(driver, "Password", repeatedPassword);
-        Kontrolki.enterText(driver, "John", firstName);
-        Kontrolki.enterText(driver, "Doe", lastName);
-        Kontrolki.enterText(driver, "john.doe@example.com", email);
-        Kontrolki.enterText(driver, "123456789", phone);
-        Kontrolki.enterText(driver, "123 Main St", address1);
-        Kontrolki.enterText(driver, "123 Main St", address2);  // Wypełnienie pola adresowego// Wypełnienie pola adresowego
-        Kontrolki.enterText(driver, "Wwa", city);
-        Kontrolki.enterText(driver,"Mazowieckie", state);
-        Kontrolki.enterText(driver, "05-400", zip);
-        Kontrolki.enterText(driver, "Polska", country);
-        Kontrolki.selectOptionByValue(driver, favouriteCategory,"FISH");
-        Kontrolki.selectOptionByValue(driver, languageSelector, "english");
-        Kontrolki.checkCheckbox(driver, enable_MyList);
-        Kontrolki.checkCheckbox(driver, enable_MyBanner);
+        BasePage.enterAdminWithRandomNumber(driver, id);  // Zamiast wpisywać "admin", teraz generujemy losowy login
+        BasePage.enterText(driver, "Password", password);
+        BasePage.enterText(driver, "Password", repeatedPassword);
+        BasePage.enterText(driver, "John", firstName);
+        BasePage.enterText(driver, "Doe", lastName);
+        BasePage.enterText(driver, "john.doe@example.com", email);
+        BasePage.enterText(driver, "123456789", phone);
+        BasePage.enterText(driver, "123 Main St", address1);
+        BasePage.enterText(driver, "123 Main St", address2);  // Wypełnienie pola adresowego// Wypełnienie pola adresowego
+        BasePage.enterText(driver, "Wwa", city);
+        BasePage.enterText(driver,"Mazowieckie", state);
+        BasePage.enterText(driver, "05-400", zip);
+        BasePage.enterText(driver, "Polska", country);
+        BasePage.selectOptionByValue(driver, favouriteCategory,"FISH");
+        BasePage.selectOptionByValue(driver, languageSelector, "english");
+        BasePage.checkCheckbox(driver, enable_MyList);
+        BasePage.checkCheckbox(driver, enable_MyBanner);
         // Kliknięcie przycisku "Create Account"
         try {
             Thread.sleep(20000);
