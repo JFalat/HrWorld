@@ -10,22 +10,17 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class LoginPage extends BasePage {
     // Poczekaj, aż strona się załaduje
-        @FindBy(name = "username")
-        private WebElement usernameField;
-
-        @FindBy(name="password")
-        private WebElement passwordField;
-
-        @FindBy(name="singon")
-        private WebElement loginButton;
+    private By usernameField = By.name("username");
+    private By password = By.name("password");
+    private By loginButton = By.name("singleton");
 
 public LoginPage(WebDriver driver) {
             super(driver);
         }
 
-public void login(String username, String password) {
-        usernameField.sendKeys(username);  // Wpisanie nazwy użytkownika
-        passwordField.sendKeys(password);  // Wpisanie hasła
-        loginButton.click();               // Kliknięcie przycisku logowania
+public void login() {
+    enterText("Admin", usernameField);
+    enterText("password", password);
+    click(loginButton);// Kliknięcie przycisku logowania
     }
 }
