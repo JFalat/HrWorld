@@ -17,7 +17,7 @@ public class BasePage {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
-    public void selectOptionByValue(By locator, String value) {
+    public void selectOptionByValue(String value,By locator) {
         WebElement dropdownElement = driver.findElement(locator);
         Select dropdown = new Select(dropdownElement);
         dropdown.selectByValue(value);

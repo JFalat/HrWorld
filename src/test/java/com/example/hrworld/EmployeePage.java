@@ -53,23 +53,26 @@ public class EmployeePage extends BasePage {
         enterText(username, locator);  // Wpisanie tekstu w pole
     }
 
-    public void enterUserData() throws InterruptedException {
+    public void enterUserData(String passwordValue,String repatedPasswordValue, String name, String lastname,
+                              String mail,String telephone, String addres1,String addres2, String town,String stat,
+                              String citycode,String count)
+                               throws InterruptedException {
         // Wypełnienie danych użytkownika
-        enterAdminWithRandomNumber(id);  // Zamiast wpisywać "admin", teraz generujemy losowy login
-        enterText("Password", password);
-        enterText("Password", repeatedPassword);
-        enterText("John", firstName);
-        enterText("Doe", lastName);
-        enterText("john.doe@example.com", email);
-        enterText("123456789", phone);
-        enterText("123 Main St", address1);
-        enterText("123 Main St", address2);  // Wypełnienie pola adresowego
-        enterText("Wwa", city);
-        enterText("Mazowieckie", state);
-        enterText("05-400", zip);
-        enterText("Polska", country);
-        selectOptionByValue(favouriteCategory, "FISH");
-        selectOptionByValue(languageSelector, "english");
+        enterAdminWithRandomNumber(id);
+        enterText(passwordValue, password);  // Lokalizator pola hasła
+        enterText(repatedPasswordValue, repeatedPassword);
+        enterText(name, firstName);
+        enterText(lastname, lastName);
+        enterText(mail, email);
+        enterText(telephone, phone);
+        enterText(addres1, address1);
+        enterText(addres2, address2);  // Wypełnienie pola adresowego
+        enterText(town, city);
+        enterText(stat, state);
+        enterText(citycode, zip);
+        enterText(count, country);
+        selectOptionByValue("FISH",favouriteCategory);
+        selectOptionByValue("english",languageSelector, );
         checkCheckbox(enable_MyList);
         checkCheckbox(enable_MyBanner);
         click(submitButton);

@@ -14,7 +14,8 @@ public class EmployeeTest extends BaseTest {
         EmployeePage employeePage = new EmployeePage(driver);
         employeePage.clickSignIn();
         employeePage.clickRegistration();
-        employeePage.enterUserData();
+        employeePage.enterUserData("password","password","Admin","lastname",
+                "mail","12346","abc","def","Wawa","mazowsze","05400","Poland");
 
         Thread.sleep(2000);
 
