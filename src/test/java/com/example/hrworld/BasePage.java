@@ -23,13 +23,13 @@ public class BasePage {
         dropdown.selectByValue(value);
     }
 
-    public void selectOptionByVisibleText(By locator, String visibleText) {
+    public void selectOptionByVisibleText( String visibleText,By locator) {
         WebElement dropdownElement = driver.findElement(locator);
         Select dropdown = new Select(dropdownElement);
         dropdown.selectByVisibleText(visibleText);
     }
 
-    public void selectOptionByIndex(By locator, int index) {
+    public void selectOptionByIndex(int index,By locator) {
         WebElement dropdownElement = driver.findElement(locator);
         Select dropdown = new Select(dropdownElement);
         dropdown.selectByIndex(index);

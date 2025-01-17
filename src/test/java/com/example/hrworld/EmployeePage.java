@@ -53,26 +53,24 @@ public class EmployeePage extends BasePage {
         enterText(username, locator);  // Wpisanie tekstu w pole
     }
 
-    public void enterUserData(String passwordValue,String repatedPasswordValue, String name, String lastname,
-                              String mail,String telephone, String addres1,String addres2, String town,String stat,
-                              String citycode,String count)
+    public void enterUserData(User user)
                                throws InterruptedException {
         // Wypełnienie danych użytkownika
         enterAdminWithRandomNumber(id);
-        enterText(passwordValue, password);  // Lokalizator pola hasła
-        enterText(repatedPasswordValue, repeatedPassword);
-        enterText(name, firstName);
-        enterText(lastname, lastName);
-        enterText(mail, email);
-        enterText(telephone, phone);
-        enterText(addres1, address1);
-        enterText(addres2, address2);  // Wypełnienie pola adresowego
-        enterText(town, city);
-        enterText(stat, state);
-        enterText(citycode, zip);
-        enterText(count, country);
-        selectOptionByValue("FISH",favouriteCategory);
-        selectOptionByValue("english",languageSelector, );
+        enterText(user.getPasswordValue(), password);  // Lokalizator pola hasła
+        enterText(user.getRepeatedPasswordValue(), repeatedPassword);
+        enterText(user.getName(), firstName);
+        enterText(user.getLastname(), lastName);
+        enterText(user.getMail(), email);
+        enterText(user.getTelephone(), phone);
+        enterText(user.getAddress1(), address1);
+        enterText(user.getAddress2(), address2);  // Wypełnienie pola adresowego
+        enterText(user.getTown(), city);
+        enterText(user.getState(), state);
+        enterText(user.getCityCode(), zip);
+        enterText(user.getCountry(), country);
+        selectOptionByValue(user.getFavouriteCategory(),favouriteCategory);
+        selectOptionByValue(user.getLanguageSelector(),languageSelector);
         checkCheckbox(enable_MyList);
         checkCheckbox(enable_MyBanner);
         click(submitButton);
