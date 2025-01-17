@@ -34,24 +34,19 @@ public class BasePage {
         Select dropdown = new Select(dropdownElement);
         dropdown.selectByIndex(index);
     }
-    public void checkCheckbox(By locator) {
+    public void handleCheckbox(By locator, boolean czyDodacCheckbox) {
         WebElement checkbox = driver.findElement(locator);
-        if (!checkbox.isSelected()) {
-            checkbox.click();  // Zaznacza checkbox
+        boolean isChecked = checkbox.isSelected();
+
+        if (czyDodacCheckbox && !isChecked) {
+            // Jeśli chcemy zaznaczyć i checkbox nie jest zaznaczony
+            checkbox.click();
+        } else if (!czyDodacCheckbox && isChecked) {
+            // Jeśli chcemy odznaczyć i checkbox jest zaznaczony
+            checkbox.click();
         }
     }
-    // Metoda do odznaczenia checkboxa, jeśli jest zaznaczony
-    public void uncheckCheckbox(By locator) {
-        WebElement checkbox = driver.findElement(locator);
-        if (checkbox.isSelected()) {
-            checkbox.click();  // Odznacza checkbox
-        }
-    }
-    // Metoda do przełączania stanu checkboxa (jeśli jest zaznaczony, odznacza; jeśli jest odznaczony, zaznacza)
-    public void toggleCheckbox(By locator) {
-        WebElement checkbox = driver.findElement(locator);
-        checkbox.click();  // Przełącza stan checkboxa
-    }
+
     public void enterText(String text, By locator) {
         try {
             // Tworzymy WebDriverWait, aby poczekać na widoczność elementu

@@ -52,7 +52,7 @@ public class EmployeePage extends BasePage {
         String username = "admin" + randomNumber;  // Tworzenie ciągu "adminXXX"
         enterText(username, locator);  // Wpisanie tekstu w pole
     }
-
+    @Data
     public void enterUserData(User user)
                                throws InterruptedException {
         // Wypełnienie danych użytkownika
@@ -71,8 +71,8 @@ public class EmployeePage extends BasePage {
         enterText(user.getCountry(), country);
         selectOptionByValue(user.getFavouriteCategory(),favouriteCategory);
         selectOptionByValue(user.getLanguageSelector(),languageSelector);
-        checkCheckbox(enable_MyList);
-        checkCheckbox(enable_MyBanner);
+        handleCheckbox((enable_MyList), true); // Zaznacz checkbox
+        handleCheckbox((enable_MyBanner), true); // Zaznacz checkbox
         click(submitButton);
 
     }
