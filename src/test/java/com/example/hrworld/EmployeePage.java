@@ -74,5 +74,6 @@ public class EmployeePage extends BasePage {
         checkCheckbox(enable_MyList);
         checkCheckbox(enable_MyBanner);
         click(submitButton);
+
     }
 }
