@@ -56,7 +56,7 @@ public class EmployeePage extends BasePage {
         // Wypełnienie danych użytkownika
         enterAdminWithRandomNumber(id);
         enterText(user.getPasswordValue(), password);  // Lokalizator pola hasła
-        enterText(user.getRepeatedPasswordValue(), repeatedPassword);
+        enterText(user.getPasswordValue(), repeatedPassword);
 
         // Wypełnienie danych konta
         Account account = user.getAccount();
@@ -77,8 +77,9 @@ public class EmployeePage extends BasePage {
         selectOptionByValue(profile.getLanguageSelector(), languageSelector);
 
         // Zaznaczanie checkboxów
-        handleCheckbox(enable_MyList, true); // Zaznacz checkbox
-        handleCheckbox(enable_MyBanner, true); // Zaznacz checkbox
+        handleCheckbox(enable_MyList, profile.isEnable_MyList()); // Zaznacz/odznacz checkbox zgodnie z profilem
+// Zaznacz checkbox
+        handleCheckbox(enable_MyBanner, profile.isEnable_MyBanner()); // Zaznacz checkbox
 
         // Kliknięcie przycisku submit
         click(submitButton);

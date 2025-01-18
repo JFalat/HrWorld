@@ -35,14 +35,14 @@ public class BasePage {
         dropdown.selectByIndex(index);
     }
 
-    public void handleCheckbox(By locator, boolean czyDodacCheckbox) {
+    public void handleCheckbox(By locator, boolean CheckCheckbox) {
         WebElement checkbox = driver.findElement(locator);
         boolean isChecked = checkbox.isSelected();
 
-        if (czyDodacCheckbox && !isChecked) {
+        if (CheckCheckbox && !isChecked) {
             // Jeśli chcemy zaznaczyć i checkbox nie jest zaznaczony
             checkbox.click();
-        } else if (!czyDodacCheckbox && isChecked) {
+        } else if (!CheckCheckbox && isChecked) {
             // Jeśli chcemy odznaczyć i checkbox jest zaznaczony
             checkbox.click();
         }

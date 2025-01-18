@@ -15,7 +15,7 @@ public class EmployeeTest extends BaseTest {
 
         Account account = new Account("name","lastname","mail","123","dsfds","fdsfdsf","Wawa","maz","2647","Polandia");
         Profile profile = new Profile("FISH", "english", true,true);
-        User user = new User("password", "password", profile, account);
+        User user = new User("password", profile, account);
         employeePage.clickSignIn();
         employeePage.clickRegistration();
         employeePage.enterUserData(user);

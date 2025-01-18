@@ -16,9 +16,9 @@ public class User {
     private Account account;
 
     // Konstruktor z wszystkimi polami (w tym profile i account)
-    public User(String passwordValue, String repeatedPasswordValue, Profile profile, Account account) {
+    public User(String passwordValue, Profile profile, Account account) {
         this.passwordValue = passwordValue;
-        this.repeatedPasswordValue = repeatedPasswordValue;
+//        this.repeatedPasswordValue = repeatedPasswordValue;
         this.profile = profile;
         this.account = account;
     }
