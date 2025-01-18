@@ -12,12 +12,10 @@ public class EmployeeTest extends BaseTest {
 
         // Tworzenie obiektu strony
         EmployeePage employeePage = new EmployeePage(driver);
-        User user = new User("password","password","name","lastname"
-                ,"mail","123","dsfds",
-                "fdsfdsf","Wawa","maz","2647","Polandia","FISH",
-                "english",
-                true,true);
 
+        Account account = new Account("name","lastname","mail","123","dsfds","fdsfdsf","Wawa","maz","2647","Polandia");
+        Profile profile = new Profile("FISH", "english", true,true);
+        User user = new User("password", "password", profile, account);
         employeePage.clickSignIn();
         employeePage.clickRegistration();
         employeePage.enterUserData(user);

@@ -5,23 +5,21 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @Data // Generuje gettery, settery, equals, hashCode i toString
-@AllArgsConstructor // Generuje konstruktor z wszystkimi polami
-@NoArgsConstructor  // Generuje konstruktor bezargumentowy
+//@AllArgsConstructor // Generuje konstruktor z wszystkimi polami
+//@NoArgsConstructor  // Generuje konstruktor bezargumentowy
 public class User {
     private String passwordValue;
     private String repeatedPasswordValue;
-    private String name;
-    private String lastname;
-    private String mail;
-    private String telephone;
-    private String address1;
-    private String address2;
-    private String town;
-    private String state;
-    private String cityCode;
-    private String country;
-    private String favouriteCategory;
-    private String languageSelector;
-    private boolean enable_MyList;
-    private boolean enable_MyBanner;
+
+    // Kompozycja: User posiada Profile i Account
+    private Profile profile;
+    private Account account;
+
+    // Konstruktor z wszystkimi polami (w tym profile i account)
+    public User(String passwordValue, String repeatedPasswordValue, Profile profile, Account account) {
+        this.passwordValue = passwordValue;
+        this.repeatedPasswordValue = repeatedPasswordValue;
+        this.profile = profile;
+        this.account = account;
+    }
 }

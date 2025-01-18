@@ -1,4 +1,6 @@
 package com.example.hrworld;
+
+import lombok.RequiredArgsConstructor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -6,34 +8,33 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
 import java.time.Duration;
-import java.util.Random;
 
+@RequiredArgsConstructor
 public class BasePage {
-    protected WebDriver driver;
-    protected WebDriverWait wait;
+    protected final WebDriver driver;
+    protected final WebDriverWait wait;
 
-    public BasePage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-    }
+    // Konstruktor generowany automatycznie przez Lombok (dzięki @RequiredArgsConstructor)
+    // WebDriver i WebDriverWait są przekazywane jako wymagane argumenty
 
-    public void selectOptionByValue(String value,By locator) {
+    public void selectOptionByValue(String value, By locator) {
         WebElement dropdownElement = driver.findElement(locator);
         Select dropdown = new Select(dropdownElement);
         dropdown.selectByValue(value);
     }
 
-    public void selectOptionByVisibleText( String visibleText,By locator) {
+    public void selectOptionByVisibleText(String visibleText, By locator) {
         WebElement dropdownElement = driver.findElement(locator);
         Select dropdown = new Select(dropdownElement);
         dropdown.selectByVisibleText(visibleText);
     }
 
-    public void selectOptionByIndex(int index,By locator) {
+    public void selectOptionByIndex(int index, By locator) {
         WebElement dropdownElement = driver.findElement(locator);
         Select dropdown = new Select(dropdownElement);
         dropdown.selectByIndex(index);
     }
+
     public void handleCheckbox(By locator, boolean czyDodacCheckbox) {
         WebElement checkbox = driver.findElement(locator);
         boolean isChecked = checkbox.isSelected();

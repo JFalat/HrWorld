@@ -8,10 +8,10 @@ import java.util.Random;
 
 public class EmployeePage extends BasePage {
 
-
     public EmployeePage(WebDriver driver) {
-        super(driver);  // Wywołanie konstruktora klasy nadrzędnej
+        super(driver, new WebDriverWait(driver, Duration.ofSeconds(10)));  // Wywołanie konstruktora klasy nadrzędnej z dwoma argumentami
     }
+
 
     // Zlokalizowanie elementów typu WebElement
     private By id = By.name("username");
@@ -35,7 +35,6 @@ public class EmployeePage extends BasePage {
     private By signInLink = By.linkText("Sign In");
     private By registrationLink = By.linkText("Register Now!");
 
-
     public void clickSignIn() {
         WebElement signIn = driver.findElement(signInLink);
         signIn.click();
@@ -52,28 +51,36 @@ public class EmployeePage extends BasePage {
         String username = "admin" + randomNumber;  // Tworzenie ciągu "adminXXX"
         enterText(username, locator);  // Wpisanie tekstu w pole
     }
-    @Data
-    public void enterUserData(User user)
-                               throws InterruptedException {
+
+    public void enterUserData(User user) {
         // Wypełnienie danych użytkownika
         enterAdminWithRandomNumber(id);
         enterText(user.getPasswordValue(), password);  // Lokalizator pola hasła
         enterText(user.getRepeatedPasswordValue(), repeatedPassword);
-        enterText(user.getName(), firstName);
-        enterText(user.getLastname(), lastName);
-        enterText(user.getMail(), email);
-        enterText(user.getTelephone(), phone);
-        enterText(user.getAddress1(), address1);
-        enterText(user.getAddress2(), address2);  // Wypełnienie pola adresowego
-        enterText(user.getTown(), city);
-        enterText(user.getState(), state);
-        enterText(user.getCityCode(), zip);
-        enterText(user.getCountry(), country);
-        selectOptionByValue(user.getFavouriteCategory(),favouriteCategory);
-        selectOptionByValue(user.getLanguageSelector(),languageSelector);
-        handleCheckbox((enable_MyList), true); // Zaznacz checkbox
-        handleCheckbox((enable_MyBanner), true); // Zaznacz checkbox
-        click(submitButton);
 
+        // Wypełnienie danych konta
+        Account account = user.getAccount();
+        enterText(account.getName(), firstName);
+        enterText(account.getLastname(), lastName);
+        enterText(account.getMail(), email);
+        enterText(account.getTelephone(), phone);
+        enterText(account.getAddress1(), address1);
+        enterText(account.getAddress2(), address2);  // Wypełnienie pola adresowego
+        enterText(account.getTown(), city);
+        enterText(account.getState(), state);
+        enterText(account.getCityCode(), zip);
+        enterText(account.getCountry(), country);
+
+        // Wypełnienie danych profilu
+        Profile profile = user.getProfile();
+        selectOptionByValue(profile.getFavouriteCategory(), favouriteCategory);
+        selectOptionByValue(profile.getLanguageSelector(), languageSelector);
+
+        // Zaznaczanie checkboxów
+        handleCheckbox(enable_MyList, true); // Zaznacz checkbox
+        handleCheckbox(enable_MyBanner, true); // Zaznacz checkbox
+
+        // Kliknięcie przycisku submit
+        click(submitButton);
     }
 }
