@@ -1,8 +1,6 @@
 package com.example.hrworld;
 
 import lombok.Data;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 @Data // Generuje gettery, settery, equals, hashCode i toString
 //@AllArgsConstructor // Generuje konstruktor z wszystkimi polami
