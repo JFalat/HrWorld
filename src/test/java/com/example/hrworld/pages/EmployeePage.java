@@ -5,17 +5,16 @@ import com.example.hrworld.businessObject.Profile;
 import com.example.hrworld.businessObject.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
 import java.util.Random;
 
 public class EmployeePage extends BasePage {
 
+    // Konstruktor przyjmujący WebDriver
     public EmployeePage(WebDriver driver) {
-        super(driver); // Przekazuje tylko WebDriver do klasy nadrzędnej
+        super(driver);
     }
 
-    // Zlokalizowanie elementów typu WebElement
+    // Lokatory elementów
     private By id = By.name("username");
     private By password = By.name("password");
     private By repeatedPassword = By.name("repeatedPassword");
@@ -37,23 +36,27 @@ public class EmployeePage extends BasePage {
     private By signInLink = By.linkText("Sign In");
     private By registrationLink = By.linkText("Register Now!");
 
+    // Kliknięcie linku "Sign In"
     public void clickSignIn() {
-        click(signInLink); // Korzysta z metody odziedziczonej z BasePage
+        click(signInLink);
     }
 
+    // Kliknięcie linku "Register Now!"
     public void clickRegistration() {
-        click(registrationLink); // Korzysta z metody odziedziczonej z BasePage
+        click(registrationLink);
     }
 
+    // Wprowadzenie nazwy użytkownika z losowym numerem
     public void enterAdminWithRandomNumber(By locator) {
         Random rand = new Random();
         int randomNumber = rand.nextInt(900) + 100; // Generowanie liczby od 100 do 999
         String username = "admin" + randomNumber;  // Tworzenie ciągu "adminXXX"
-        enterText(username, locator);             // Wpisanie tekstu w pole
+        enterText(username, locator);
     }
 
+    // Wypełnienie danych użytkownika
     public void enterUserData(User user) {
-        // Wypełnienie danych użytkownika
+        // Wypełnienie danych logowania
         enterAdminWithRandomNumber(id);
         enterText(user.getPasswordValue(), password);
         enterText(user.getPasswordValue(), repeatedPassword);

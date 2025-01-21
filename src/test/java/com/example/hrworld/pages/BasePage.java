@@ -1,89 +1,82 @@
 package com.example.hrworld.pages;
 
 import lombok.RequiredArgsConstructor;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
 
 import java.time.Duration;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor // Lombok generuje konstruktor przyjmujący 'driver'
 public class BasePage {
-    protected final WebDriver driver;
-    protected final WebDriverWait wait;
+    protected final WebDriver driver;  // Finalne pole, które będzie przekazane do konstruktora
 
-    // Konstruktor z domyślnym czasem oczekiwania
-    public BasePage(WebDriver driver) {
-        this(driver, Duration.ofSeconds(10)); // Domyślny czas 10 sekund
-    }
-
-    // Konstruktor z niestandardowym czasem oczekiwania
-    public BasePage(WebDriver driver, Duration waitTime) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, waitTime);
-    }
     // Metoda pomocnicza do oczekiwania na widoczność elementu
-    protected WebElement waitForElement(By locator) {
+    protected WebElement waitForElement(By locator, int waitTimeInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTimeInSeconds));
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
+    // Metoda uproszczona dla domyślnego czasu oczekiwania (np. 10 sekund)
+    protected WebElement waitForElement(By locator) {
+        return waitForElement(locator, 10);
+    }
+
+    // Kliknięcie elementu
+    public void click(By locator) {
+        waitForElement(locator).click();
+    }
+
+    // Wpisanie tekstu w pole
+    public void enterText(String text, By locator) {
+        WebElement element = waitForElement(locator);
+        element.clear();
+        element.sendKeys(text);
+    }
+
+    // Wybór opcji z rozwijanej listy przez wartość
     public void selectOptionByValue(String value, By locator) {
         WebElement dropdownElement = waitForElement(locator);
         Select dropdown = new Select(dropdownElement);
         dropdown.selectByValue(value);
     }
 
+    // Wybór opcji z rozwijanej listy przez widoczny tekst
     public void selectOptionByVisibleText(String visibleText, By locator) {
         WebElement dropdownElement = waitForElement(locator);
         Select dropdown = new Select(dropdownElement);
         dropdown.selectByVisibleText(visibleText);
     }
 
+    // Wybór opcji z rozwijanej listy przez indeks
     public void selectOptionByIndex(int index, By locator) {
         WebElement dropdownElement = waitForElement(locator);
         Select dropdown = new Select(dropdownElement);
         dropdown.selectByIndex(index);
     }
 
+    // Zaznaczanie lub odznaczanie checkboxa
     public void handleCheckbox(By locator, boolean checkCheckbox) {
         WebElement checkbox = waitForElement(locator);
         boolean isChecked = checkbox.isSelected();
 
         if (checkCheckbox && !isChecked) {
-            checkbox.click();
+            checkbox.click(); // Zaznacz checkbox, jeśli nie jest zaznaczony
         } else if (!checkCheckbox && isChecked) {
-            checkbox.click();
+            checkbox.click(); // Odznacz checkbox, jeśli jest zaznaczony
         }
     }
 
-    public void enterText(String text, By locator) {
-        try {
-            WebElement field = waitForElement(locator);
-
-            // Kliknij na element
-            field.click();
-
-            // Wyczyść pole przed wpisaniem tekstu (opcjonalnie)
-            field.clear();
-
-            // Wpisz tekst do pola
-            field.sendKeys(text);
-
-            System.out.println("Text entered: " + text + " into field located by: " + locator.toString());
-        } catch (Exception e) {
-            System.out.println("Failed to enter text. Error: " + e.getMessage());
-        }
+    // Metoda do uzyskania tekstu z elementu
+    public String getElementText(By locator) {
+        return waitForElement(locator).getText();
     }
 
-    public void click(By locator) {
-        try {
-            WebElement element = waitForElement(locator);
-            element.click();
-        } catch (Exception e) {
-            System.out.println("Failed to click element. Error: " + e.getMessage());
-        }
+    // Metoda do uzyskania atrybutu z elementu (np. "value", "href" itd.)
+    public String getElementAttribute(By locator, String attribute) {
+        return waitForElement(locator).getAttribute(attribute);
     }
 }
