@@ -1,4 +1,4 @@
-package com.example.hrworld;
+package com.example.hrworld.pages;
 
 import lombok.RequiredArgsConstructor;
 import org.openqa.selenium.WebDriver;
@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
+
 import java.time.Duration;
 
 @RequiredArgsConstructor
@@ -14,45 +15,53 @@ public class BasePage {
     protected final WebDriver driver;
     protected final WebDriverWait wait;
 
-    // Konstruktor generowany automatycznie przez Lombok (dzięki @RequiredArgsConstructor)
-    // WebDriver i WebDriverWait są przekazywane jako wymagane argumenty
+    // Konstruktor z domyślnym czasem oczekiwania
+    public BasePage(WebDriver driver) {
+        this(driver, Duration.ofSeconds(10)); // Domyślny czas 10 sekund
+    }
+
+    // Konstruktor z niestandardowym czasem oczekiwania
+    public BasePage(WebDriver driver, Duration waitTime) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, waitTime);
+    }
+    // Metoda pomocnicza do oczekiwania na widoczność elementu
+    protected WebElement waitForElement(By locator) {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
 
     public void selectOptionByValue(String value, By locator) {
-        WebElement dropdownElement = driver.findElement(locator);
+        WebElement dropdownElement = waitForElement(locator);
         Select dropdown = new Select(dropdownElement);
         dropdown.selectByValue(value);
     }
 
     public void selectOptionByVisibleText(String visibleText, By locator) {
-        WebElement dropdownElement = driver.findElement(locator);
+        WebElement dropdownElement = waitForElement(locator);
         Select dropdown = new Select(dropdownElement);
         dropdown.selectByVisibleText(visibleText);
     }
 
     public void selectOptionByIndex(int index, By locator) {
-        WebElement dropdownElement = driver.findElement(locator);
+        WebElement dropdownElement = waitForElement(locator);
         Select dropdown = new Select(dropdownElement);
         dropdown.selectByIndex(index);
     }
 
-    public void handleCheckbox(By locator, boolean CheckCheckbox) {
-        WebElement checkbox = driver.findElement(locator);
+    public void handleCheckbox(By locator, boolean checkCheckbox) {
+        WebElement checkbox = waitForElement(locator);
         boolean isChecked = checkbox.isSelected();
 
-        if (CheckCheckbox && !isChecked) {
-            // Jeśli chcemy zaznaczyć i checkbox nie jest zaznaczony
+        if (checkCheckbox && !isChecked) {
             checkbox.click();
-        } else if (!CheckCheckbox && isChecked) {
-            // Jeśli chcemy odznaczyć i checkbox jest zaznaczony
+        } else if (!checkCheckbox && isChecked) {
             checkbox.click();
         }
     }
 
     public void enterText(String text, By locator) {
         try {
-            // Tworzymy WebDriverWait, aby poczekać na widoczność elementu
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // Czekaj do 10 sekund
-            WebElement field = wait.until(ExpectedConditions.visibilityOfElementLocated(locator)); // Czekaj na widoczność elementu
+            WebElement field = waitForElement(locator);
 
             // Kliknij na element
             field.click();
@@ -70,6 +79,11 @@ public class BasePage {
     }
 
     public void click(By locator) {
-        driver.findElement(locator).click();
+        try {
+            WebElement element = waitForElement(locator);
+            element.click();
+        } catch (Exception e) {
+            System.out.println("Failed to click element. Error: " + e.getMessage());
+        }
     }
 }

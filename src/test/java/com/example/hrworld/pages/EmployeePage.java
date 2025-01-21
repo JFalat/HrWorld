@@ -1,17 +1,19 @@
-package com.example.hrworld;
+package com.example.hrworld.pages;
 
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import com.example.hrworld.businessObject.Account;
+import com.example.hrworld.businessObject.Profile;
+import com.example.hrworld.businessObject.User;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
-import java.time.Duration;
 import java.util.Random;
 
 public class EmployeePage extends BasePage {
 
     public EmployeePage(WebDriver driver) {
-        super(driver, new WebDriverWait(driver, Duration.ofSeconds(10)));  // Wywołanie konstruktora klasy nadrzędnej z dwoma argumentami
+        super(driver); // Przekazuje tylko WebDriver do klasy nadrzędnej
     }
-
 
     // Zlokalizowanie elementów typu WebElement
     private By id = By.name("username");
@@ -23,10 +25,10 @@ public class EmployeePage extends BasePage {
     private By phone = By.name("account.phone");
     private By address1 = By.name("account.address1");
     private By address2 = By.name("account.address2");
-    private By city = By.name("account.city");  // Nowe pole adresowe
-    private By state = By.name("account.state");  // Nowe pole adresowe
+    private By city = By.name("account.city");
+    private By state = By.name("account.state");
     private By zip = By.name("account.zip");
-    private By country = By.name("account.country");  // Nowe pole adresowe
+    private By country = By.name("account.country");
     private By favouriteCategory = By.name("account.favouriteCategoryId");
     private By languageSelector = By.name("account.languagePreference");
     private By submitButton = By.name("newAccount");
@@ -36,26 +38,24 @@ public class EmployeePage extends BasePage {
     private By registrationLink = By.linkText("Register Now!");
 
     public void clickSignIn() {
-        WebElement signIn = driver.findElement(signInLink);
-        signIn.click();
+        click(signInLink); // Korzysta z metody odziedziczonej z BasePage
     }
 
     public void clickRegistration() {
-        WebElement registration = driver.findElement(registrationLink);
-        registration.click();
+        click(registrationLink); // Korzysta z metody odziedziczonej z BasePage
     }
 
     public void enterAdminWithRandomNumber(By locator) {
         Random rand = new Random();
-        int randomNumber = rand.nextInt(900) + 100;  // Generowanie liczby od 100 do 999
+        int randomNumber = rand.nextInt(900) + 100; // Generowanie liczby od 100 do 999
         String username = "admin" + randomNumber;  // Tworzenie ciągu "adminXXX"
-        enterText(username, locator);  // Wpisanie tekstu w pole
+        enterText(username, locator);             // Wpisanie tekstu w pole
     }
 
     public void enterUserData(User user) {
         // Wypełnienie danych użytkownika
         enterAdminWithRandomNumber(id);
-        enterText(user.getPasswordValue(), password);  // Lokalizator pola hasła
+        enterText(user.getPasswordValue(), password);
         enterText(user.getPasswordValue(), repeatedPassword);
 
         // Wypełnienie danych konta
@@ -65,7 +65,7 @@ public class EmployeePage extends BasePage {
         enterText(account.getMail(), email);
         enterText(account.getTelephone(), phone);
         enterText(account.getAddress1(), address1);
-        enterText(account.getAddress2(), address2);  // Wypełnienie pola adresowego
+        enterText(account.getAddress2(), address2);
         enterText(account.getTown(), city);
         enterText(account.getState(), state);
         enterText(account.getCityCode(), zip);
@@ -77,9 +77,8 @@ public class EmployeePage extends BasePage {
         selectOptionByValue(profile.getLanguageSelector(), languageSelector);
 
         // Zaznaczanie checkboxów
-        handleCheckbox(enable_MyList, profile.isEnable_MyList()); // Zaznacz/odznacz checkbox zgodnie z profilem
-// Zaznacz checkbox
-        handleCheckbox(enable_MyBanner, profile.isEnable_MyBanner()); // Zaznacz checkbox
+        handleCheckbox(enable_MyList, profile.isEnable_MyList());
+        handleCheckbox(enable_MyBanner, profile.isEnable_MyBanner());
 
         // Kliknięcie przycisku submit
         click(submitButton);

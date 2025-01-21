@@ -1,4 +1,4 @@
-package com.example.hrworld;
+package com.example.hrworld.test;
 
 public @interface Data {
 }

@@ -1,4 +1,4 @@
-package com.example.hrworld;
+package com.example.hrworld.businessObject;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

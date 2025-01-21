@@ -1,4 +1,4 @@
-package com.example.hrworld;
+package com.example.hrworld.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -14,7 +14,7 @@ public class LoginPage extends BasePage {
     private By loginButton = By.name("singleton");
 
     public LoginPage(WebDriver driver) {
-        super(driver, new WebDriverWait(driver, Duration.ofSeconds(10)));  // Wywołanie konstruktora klasy nadrzędnej z dwoma argumentami
+        super(driver); // Przekazuje tylko WebDriver do klasy nadrzędnej
     }
 
     public void login() {

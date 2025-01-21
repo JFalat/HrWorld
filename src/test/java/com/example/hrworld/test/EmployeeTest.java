@@ -1,6 +1,10 @@
-package com.example.hrworld;
+package com.example.hrworld.test;
 
 
+import com.example.hrworld.businessObject.Account;
+import com.example.hrworld.businessObject.Profile;
+import com.example.hrworld.businessObject.User;
+import com.example.hrworld.pages.EmployeePage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,10 +23,7 @@ public class EmployeeTest extends BaseTest {
         employeePage.clickSignIn();
         employeePage.clickRegistration();
         employeePage.enterUserData(user);
-
         Thread.sleep(2000);
-
-
 
     }
 }
