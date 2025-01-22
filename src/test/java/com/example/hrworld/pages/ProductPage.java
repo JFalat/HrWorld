@@ -1,8 +1,10 @@
 package com.example.hrworld.pages;
+
 import com.example.hrworld.businessObject.Product;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +15,16 @@ public class ProductPage extends BasePage {
         super(driver);
     }
 
-    // Lokatory elementów produktów
+    // Lokator dla wierszy produktów w tabeli
     private By productRows = By.cssSelector("table tbody tr:not(:first-child)");
-    public List<Product> fetchProducts() {
+
+    /**
+     * Metoda pobiera produkty z bieżącej strony dla danej kategorii.
+     *
+     * @param type Typ kategorii, np. FISH, DOGS, REPTILES, CATS, BIRDS
+     * @return Lista obiektów Product
+     */
+    public List<Product> fetchProducts(String type) {
         List<Product> productList = new ArrayList<>();
 
         // Znajdź wszystkie wiersze produktów
@@ -29,10 +38,9 @@ public class ProductPage extends BasePage {
             String productName = row.findElement(By.cssSelector("td:nth-child(2)")).getText();
 
             // Dodaj nowy produkt do listy
-            productList.add(new Product("FISH", productName, productId));
+            productList.add(new Product(type, productName, productId));
         }
 
         return productList;
     }
-
 }
