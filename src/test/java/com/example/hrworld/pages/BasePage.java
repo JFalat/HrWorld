@@ -15,14 +15,10 @@ public class BasePage {
     protected final WebDriver driver;  // Finalne pole, które będzie przekazane do konstruktora
 
     // Metoda pomocnicza do oczekiwania na widoczność elementu
-    protected WebElement waitForElement(By locator, int waitTimeInSeconds) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTimeInSeconds));
+    protected WebElement waitForElement(By locator, Integer... waitTimeInSeconds) {
+        int waitTime = (waitTimeInSeconds.length > 0) ? waitTimeInSeconds[0] : 10; // Domyślnie 10 sekund
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-    }
-
-    // Metoda uproszczona dla domyślnego czasu oczekiwania (np. 10 sekund)
-    protected WebElement waitForElement(By locator) {
-        return waitForElement(locator, 10);
     }
 
     // Kliknięcie elementu
