@@ -1,6 +1,7 @@
 package com.example.hrworld.pages;
 
 import com.example.hrworld.businessObject.Product;
+import com.example.hrworld.businessObject.ProductType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -21,11 +22,11 @@ public class ProductPage extends BasePage {
 
     /**
      * Metoda pobiera produkty z bieżącej strony dla danej kategorii.
-     *
+     *st
      * @param type Typ kategorii, np. FISH, DOGS, REPTILES, CATS, BIRDS
      * @return Lista obiektów Product
      */
-    public List<Product> fetchProducts(String type) {
+    public List<Product> fetchProducts(ProductType type) {
         List<Product> productList = new ArrayList<>();
 
         // Znajdź wszystkie wiersze produktów
