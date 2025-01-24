@@ -15,19 +15,32 @@ public class ProductTest extends BaseTest {
     public void testFetchProducts() {
         ProductPage productPage = new ProductPage(driver);
 
-        // Pobierz produkty dla kategorii FISH
-        driver.get("https://przyklady.javastart.pl/jpetstore/actions/Catalog.action?viewCategory=&categoryId=FISH");
-        List<Product> fishProducts = productPage.fetchProducts(ProductType.FISH);
-        fishProducts.forEach(System.out::println); // Wyświetla produkty FISH w konsoli
-        assertFalse(fishProducts.isEmpty());
+        // Test dla kategorii FISH
+        verifyProductsForCategory(productPage, ProductType.FISH);
 
-        // Pobierz produkty dla kategorii DOGS
-        driver.get("https://przyklady.javastart.pl/jpetstore/actions/Catalog.action?viewCategory=&categoryId=DOGS");
-        List<Product> dogProducts = productPage.fetchProducts(ProductType.DOGS);
-        dogProducts.forEach(System.out::println); // Wyświetla produkty DOGS w konsoli
-        assertFalse(dogProducts.isEmpty());
+        // Test dla kategorii DOGS
+        verifyProductsForCategory(productPage, ProductType.DOGS);
 
-        System.out.println("Liczba produktów FISH: " + fishProducts.size());
-        System.out.println("Liczba produktów DOGS: " + dogProducts.size());
+        // Możesz dodać kolejne kategorie
+        verifyProductsForCategory(productPage, ProductType.CATS);
+        verifyProductsForCategory(productPage, ProductType.REPTILES);
+        verifyProductsForCategory(productPage, ProductType.BIRDS);
+    }
+
+    /**
+     * Metoda pomocnicza do testowania produktów dla danej kategorii.
+     *
+     * @param productPage Obiekt strony produktów
+     * @param productType Typ produktu (FISH, DOGS, itp.)
+     */
+    private void verifyProductsForCategory(ProductPage productPage, ProductType productType) {
+        String url = "https://przyklady.javastart.pl/jpetstore/actions/Catalog.action?viewCategory=&categoryId=" + productType.name();
+        driver.get(url); // Przejdź na stronę odpowiedniej kategorii
+
+        List<Product> products = productPage.fetchProducts(productType);
+        products.forEach(System.out::println); // Wyświetl produkty w konsoli
+
+        assertFalse(products.isEmpty(), "Lista produktów dla " + productType + " nie powinna być pusta");
+        System.out.println("Liczba produktów dla " + productType + ": " + products.size());
     }
 }

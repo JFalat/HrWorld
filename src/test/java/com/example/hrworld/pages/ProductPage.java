@@ -6,7 +6,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,23 +21,26 @@ public class ProductPage extends BasePage {
 
     /**
      * Metoda pobiera produkty z bieżącej strony dla danej kategorii.
-     *st
+     *
      * @param type Typ kategorii, np. FISH, DOGS, REPTILES, CATS, BIRDS
      * @return Lista obiektów Product
      */
     public List<Product> fetchProducts(ProductType type) {
-        List<Product> productList = new ArrayList<>();
-
         // Znajdź wszystkie wiersze produktów
         List<WebElement> rows = driver.findElements(productRows);
 
+        // Mapuj wiersze na obiekty Product
         return rows.stream()
                 .map(row -> {
+                    // Pobierz ID produktu z pierwszej kolumny
                     String productId = row.findElement(By.cssSelector("td:first-child a")).getText();
+
+                    // Pobierz nazwę produktu z drugiej kolumny
                     String productName = row.findElement(By.cssSelector("td:nth-child(2)")).getText();
-                return new Product(type,productId,productName);
+
+                    // Twórz obiekt Product z pustą listą itemów
+                    return new Product(type, productName, productId, List.of());
                 })
                 .collect(Collectors.toList());
     }
-    }
-
+}
