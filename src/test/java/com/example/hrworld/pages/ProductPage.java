@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProductPage extends BasePage {
 
@@ -30,17 +31,13 @@ public class ProductPage extends BasePage {
         // Znajdź wszystkie wiersze produktów
         List<WebElement> rows = driver.findElements(productRows);
 
-        for (WebElement row : rows) {
-            // Pobierz ID produktu z pierwszej kolumny
-            String productId = row.findElement(By.cssSelector("td:first-child a")).getText();
-
-            // Pobierz nazwę produktu z drugiej kolumny
-            String productName = row.findElement(By.cssSelector("td:nth-child(2)")).getText();
-
-            // Dodaj nowy produkt do listy
-            productList.add(new Product(type, productName, productId));
-        }
-
-        return productList;
+        return rows.stream()
+                .map(row -> {
+                    String productId = row.findElement(By.cssSelector("td:first-child a")).getText();
+                    String productName = row.findElement(By.cssSelector("td:nth-child(2)")).getText();
+                return new Product(type,productId,productName);
+                })
+                .collect(Collectors.toList());
     }
-}
+    }
+
