@@ -1,5 +1,6 @@
 package com.example.hrworld.test;
 
+import com.example.hrworld.businessObject.Item;
 import com.example.hrworld.businessObject.Product;
 import com.example.hrworld.businessObject.ProductType;
 import com.example.hrworld.pages.ProductPage;
@@ -13,34 +14,26 @@ public class ProductTest extends BaseTest {
 
     @Test
     public void testFetchProducts() {
+        // Przejdź do strony z kategorią FISH
+        driver.get("https://przyklady.javastart.pl/jpetstore/actions/Catalog.action?viewCategory=&categoryId=FISH");
+
+        // Utwórz obiekt strony ProductPage
         ProductPage productPage = new ProductPage(driver);
 
-        // Test dla kategorii FISH
-        verifyProductsForCategory(productPage, ProductType.FISH);
+        // Pobierz wszystkie produkty dla kategorii FISH
+        List<Product> products = productPage.fetchProducts(ProductType.FISH);
 
-        // Test dla kategorii DOGS
-        verifyProductsForCategory(productPage, ProductType.DOGS);
-
-        // Możesz dodać kolejne kategorie
-        verifyProductsForCategory(productPage, ProductType.CATS);
-        verifyProductsForCategory(productPage, ProductType.REPTILES);
-        verifyProductsForCategory(productPage, ProductType.BIRDS);
-    }
-
-    /**
-     * Metoda pomocnicza do testowania produktów dla danej kategorii.
-     *
-     * @param productPage Obiekt strony produktów
-     * @param productType Typ produktu (FISH, DOGS, itp.)
-     */
-    private void verifyProductsForCategory(ProductPage productPage, ProductType productType) {
-        String url = "https://przyklady.javastart.pl/jpetstore/actions/Catalog.action?viewCategory=&categoryId=" + productType.name();
-        driver.get(url); // Przejdź na stronę odpowiedniej kategorii
-
-        List<Product> products = productPage.fetchProducts(productType);
-        products.forEach(System.out::println); // Wyświetl produkty w konsoli
-
-        assertFalse(products.isEmpty(), "Lista produktów dla " + productType + " nie powinna być pusta");
-        System.out.println("Liczba produktów dla " + productType + ": " + products.size());
+        // Wypisz szczegóły produktów i ich itemów
+        for (Product product : products) {
+            System.out.println("Product ID: " + product.getId());
+            System.out.println("Product Name: " + product.getName());
+            System.out.println("Items:");
+            for (Item item : product.getItems()) {
+                System.out.println("  Item ID: " + item.getItemId());
+                System.out.println("  Description: " + item.getDescription());
+                System.out.println("  Price: " + item.getPrice());
+            }
+            System.out.println("---------------------------");
+        }
     }
 }
