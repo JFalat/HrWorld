@@ -30,6 +30,7 @@ public class ProductTest extends BaseTest {
             System.out.println("Items:");
             for (Item item : product.getItems()) {
                 System.out.println("  Item ID: " + item.getItemId());
+                System.out.println("  Product ID: " + product.getId());
                 System.out.println("  Description: " + item.getDescription());
                 System.out.println("  Price: " + item.getPrice());
             }

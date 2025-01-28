@@ -3,6 +3,7 @@ package com.example.hrworld.pages;
 import com.example.hrworld.businessObject.Item;
 import com.example.hrworld.businessObject.Product;
 import com.example.hrworld.businessObject.ProductType;
+import lombok.RequiredArgsConstructor;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,7 +11,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,77 +18,72 @@ public class ProductPage extends BasePage {
 
     private final WebDriverWait wait;
 
-    // Konstruktor
     public ProductPage(WebDriver driver) {
         super(driver);
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // Oczekiwanie do 10 sekund
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(20));
     }
 
-    // Lokator dla wierszy produktów w tabeli
     private By productRows = By.xpath("//*[@id='Catalog']/table/tbody/tr[position() > 1]");
-    private By productLink = By.xpath(".//td[1]"); // Link w pierwszej kolumnie ID produktu
-    private By itemRows = By.xpath("//*[@id='Catalog']/table/tbody/tr[position() > 1]");
+    private By productLink = By.xpath(".//td[1]");
 
     /**
-     * Pobiera wszystkie produkty z widocznej strony dla danej kategorii.
+     * Otwiera stronę itemu na podstawie nazwy produktu i zwraca obiekt ItemPage.
      *
-     * @param type Typ kategorii, np. FISH, DOGS, REPTILES, CATS, BIRDS
-     * @return Lista obiektów Product
+     * @param itemName Nazwa itemu, którego stronę chcesz otworzyć.
+     * @return Instancja klasy ItemPage.
+     */
+    public ItemPage openItemPage(String itemName) {
+        WebElement itemLink = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//a[text()='" + itemName + "']")
+        ));
+
+        // Kliknij link
+        itemLink.click();
+
+        // Zwróć instancję ItemPage
+        return new ItemPage(driver, wait);
+    }
+
+    /**
+     * Pobiera listę produktów z tabeli i zwraca je jako listę obiektów Product.
+     *
+     * @param type Typ produktu (ProductType).
+     * @return Lista obiektów Product.
      */
     public List<Product> fetchProducts(ProductType type) {
-        // Oczekuj na widoczność wszystkich wierszy produktów
+        // Oczekuj na obecność wierszy tabeli z produktami
         wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(productRows));
         List<WebElement> rows = driver.findElements(productRows);
 
         // Mapuj wiersze na obiekty Product
         return rows.stream()
                 .map(row -> {
-                    // Oczekiwanie na widoczność linku produktu
-                    WebElement link = wait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(row, productLink));
-                    String productId = link.getText(); // ID produktu
-                    String productName = row.findElement(By.xpath(".//td[2]")).getText(); // Nazwa produktu
+                    try {
+                        // Oczekuj na obecność linku w pierwszej kolumnie
+                        WebElement link = wait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(row, productLink));
+                        String productId = link.getText().trim();
+                        String productName = row.findElement(By.xpath(".//td[2]")).getText().trim();
 
-                    // Kliknij link, aby przejść na stronę itemów
-                    link.click();
+                        // Użyj openItemPage, aby przejść do strony itemu
+                        ItemPage itemPage = this.openItemPage(productName);
 
-                    // Pobierz listę itemów dla danego produktu
-                    List<Item> items = fetchItemsForProduct(productId);
+                        // Użyj metody fetchItemsForProduct w ItemPage
+                        List<Item> items = itemPage.fetchItemsForProduct();
 
-                    // Wracaj na poprzednią stronę
-                    driver.navigate().back();
+                        // Wróć na stronę produktów
+                        driver.navigate().back();
 
-                    // Upewnij się, że strona kategorii jest załadowana
-                    wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(productRows));
+                        // Poczekaj na ponowne załadowanie tabeli produktów
+                        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(productRows));
 
-                    // Utwórz obiekt Product
-                    return new Product(type, productName, productId, items);
+                        // Utwórz obiekt Product
+                        return new Product(type, productName, productId, items);
+                    } catch (Exception e) {
+                        System.err.println("Błąd podczas przetwarzania produktu: " + e.getMessage());
+                        return null;
+                    }
                 })
+                .filter(product -> product != null) // Usuń null
                 .collect(Collectors.toList());
-    }
-
-    /**
-     * Pobiera itemy dla danego produktu.
-     *
-     * @param productId ID produktu
-     * @return Lista obiektów Item
-     */
-    private List<Item> fetchItemsForProduct(String productId) {
-        // Oczekuj na widoczność wierszy itemów
-        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(itemRows));
-        List<WebElement> rows = driver.findElements(itemRows);
-
-        List<Item> items = new ArrayList<>();
-        for (WebElement row : rows) {
-            WebElement itemLink = wait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(row, By.xpath(".//td[1]")));
-            String itemId = itemLink.getText(); // ID itemu
-            String description = row.findElement(By.xpath("//td[3]")).getText(); // Opis
-            double price = Double.parseDouble(
-                    row.findElement(By.xpath("//td[4]")).getText().replace("$", "").trim() // Cena
-            );
-
-            items.add(new Item(itemId, productId, description, price));
-        }
-
-        return items;
     }
 }
