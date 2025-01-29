@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,39 +52,31 @@ public class ProductPage extends BasePage {
      * @return Lista obiektów Product.
      */
     public List<Product> fetchProducts(ProductType type) {
-        // Oczekuj na obecność wierszy tabeli z produktami
-        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(productRows));
-        List<WebElement> rows = driver.findElements(productRows);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
-        // Mapuj wiersze na obiekty Product
-        return rows.stream()
-                .map(row -> {
-                    try {
-                        // Oczekuj na obecność linku w pierwszej kolumnie
-                        WebElement link = wait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(row, productLink));
-                        String productId = link.getText().trim();
-                        String productName = row.findElement(By.xpath(".//td[2]")).getText().trim();
+        List<WebElement> productElements = wait.until(
+                ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("your-product-selector"))
+        );
 
-                        // Użyj openItemPage, aby przejść do strony itemu
-                        ItemPage itemPage = this.openItemPage(productName);
+        List<Product> products = new ArrayList<>();
+        for (WebElement element : productElements) {
+            String productName = element.findElement(By.xpath(".//td[2]")).getText().trim();
 
-                        // Użyj metody fetchItemsForProduct w ItemPage
-                        List<Item> items = itemPage.fetchItemsForProduct();
+            // Musisz znaleźć sposób na uzyskanie productId, np. przez inny atrybut
+            String productId = element.findElement(By.xpath(".//td[1]")).getText().trim();
 
-                        // Wróć na stronę produktów
-                        driver.navigate().back();
+            Product product = new Product(productId, productName);
+            List<Item> items = fetchItemsForProduct(product);
 
-                        // Poczekaj na ponowne załadowanie tabeli produktów
-                        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(productRows));
+            if (items == null) {
+                System.out.println("Warning: No items found for product " + productName);
+                items = new ArrayList<>(); // Ustaw pustą listę zamiast przerywać pętlę
+            }
 
-                        // Utwórz obiekt Product
-                        return new Product(type, productName, productId, items);
-                    } catch (Exception e) {
-                        System.err.println("Błąd podczas przetwarzania produktu: " + e.getMessage());
-                        return null;
-                    }
-                })
-                .filter(product -> product != null) // Usuń null
-                .collect(Collectors.toList());
+            product.setItems(items);
+            products.add(product);
+        }
+        return products;
     }
+
 }

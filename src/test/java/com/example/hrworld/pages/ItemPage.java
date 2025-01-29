@@ -15,7 +15,7 @@ public class ItemPage extends BasePage {
 
     private final WebDriverWait wait;
 
-    private By itemRows = By.xpath("//*[@id='ItemTable']/tbody/tr"); // Przykładowa struktura tabeli itemów
+    private By itemRows = By.xpath("//*[@id=\"Catalog\"]/table"); // Przykładowa struktura tabeli itemów
     private By itemNameColumn = By.xpath(".//td[1]"); // Nazwa itemu w pierwszej kolumnie
 
     public ItemPage(WebDriver driver, WebDriverWait wait) {
@@ -37,12 +37,16 @@ public class ItemPage extends BasePage {
         return rows.stream()
                 .map(row -> {
                     // Pobierz dane z kolumn w wierszu
-                    String itemId = row.findElement(By.xpath(".//td[1]")).getText().trim(); // ID itemu
-                    String productId = row.findElement(By.xpath(".//td[2]")).getText().trim(); // ID produktu
-                    String description = row.findElement(By.xpath(".//td[3]")).getText().trim(); // Opis
-                    double price = Double.parseDouble(row.findElement(By.xpath(".//td[4]")).getText().trim()); // Cena
+                    String itemId = row.findElement(By.xpath(".//td[1]")).getText().trim();
+                    String productId = row.findElement(By.xpath(".//td[2]")).getText().trim();
+                    String description = row.findElement(By.xpath(".//td[3]")).getText().trim();
 
-                    // Twórz obiekt Item z czterema parametrami
+                    // Pobranie ceny i usunięcie znaku "$"
+                    String priceText = row.findElement(By.xpath(".//td[4]")).getText().trim();
+                    priceText = priceText.replace("$", "").trim(); // Usunięcie znaku dolara
+                    double price = Double.parseDouble(priceText);
+
+                    // Twórz obiekt Item
                     return new Item(itemId, productId, description, price);
                 })
                 .collect(Collectors.toList());
