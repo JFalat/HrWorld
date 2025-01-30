@@ -20,21 +20,29 @@ public class ProductTest extends BaseTest {
         // Utwórz obiekt strony ProductPage
         ProductPage productPage = new ProductPage(driver);
 
-        // Pobierz wszystkie produkty dla kategorii FISH
-        List<Product> products = productPage.fetchProducts(ProductType.FISH);
+        // Pobierz wszystkie produkty wraz z ich itemami
+        List<Product> products = productPage.fetchAllItemsForAllProducts(ProductType.FISH);
+
 
         // Wypisz szczegóły produktów i ich itemów
-        for (Product product : products) {
+        products.forEach(product -> {
             System.out.println("Product ID: " + product.getId());
             System.out.println("Product Name: " + product.getName());
             System.out.println("Items:");
-            for (Item item : product.getItems()) {
-                System.out.println("  Item ID: " + item.getItemId());
-                System.out.println("  Product ID: " + product.getId());
-                System.out.println("  Description: " + item.getDescription());
-                System.out.println("  Price: " + item.getPrice());
-            }
+
+            product.getItems().forEach(item -> System.out.printf(
+                    "  Item ID: %s, Product ID: %s, Description: %s, Price: %.2f%n",
+                    item.getItemId(), product.getId(), item.getDescription(), item.getPrice()
+            )
+            );
+
             System.out.println("---------------------------");
-        }
+        });
+
+        // Sprawdzenie, czy lista produktów nie jest pusta
+        assertFalse(products.isEmpty(), "Lista produktów nie powinna być pusta");
+
+        // Sprawdzenie, czy pierwszy produkt zawiera przynajmniej jeden item
+        assertFalse(products.get(0).getItems().isEmpty(), "Lista itemów dla pierwszego produktu nie powinna być pusta");
     }
 }

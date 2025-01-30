@@ -25,7 +25,9 @@ public class ProductPage extends BasePage {
     }
 
     private By productRows = By.xpath("//*[@id='Catalog']/table/tbody/tr[position() > 1]");
-    private By productLink = By.xpath(".//td[1]");
+    private By productIdColumn = By.xpath(".//td[1]");
+    private By productNameColumn = By.xpath(".//td[2]");
+
 
     /**
      * Otwiera stronę itemu na podstawie nazwy produktu i zwraca obiekt ItemPage.
@@ -39,7 +41,7 @@ public class ProductPage extends BasePage {
         ));
 
         // Kliknij link
-        itemLink.click();
+//        itemLink.click();
 
         // Zwróć instancję ItemPage
         return new ItemPage(driver, wait);
@@ -55,28 +57,37 @@ public class ProductPage extends BasePage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
         List<WebElement> productElements = wait.until(
-                ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("your-product-selector"))
+                ExpectedConditions.presenceOfAllElementsLocatedBy(productRows)
         );
 
         List<Product> products = new ArrayList<>();
+
         for (WebElement element : productElements) {
-            String productName = element.findElement(By.xpath(".//td[2]")).getText().trim();
+            // Pobranie Product ID (link)
+            WebElement productLink = element.findElement(productIdColumn);
+            String productId = productLink.getText().trim();
+            String productUrl = productLink.getAttribute("href"); // Możesz pobrać URL
 
-            // Musisz znaleźć sposób na uzyskanie productId, np. przez inny atrybut
-            String productId = element.findElement(By.xpath(".//td[1]")).getText().trim();
-
-            Product product = new Product(productId, productName);
-            List<Item> items = fetchItemsForProduct(product);
-
-            if (items == null) {
-                System.out.println("Warning: No items found for product " + productName);
-                items = new ArrayList<>(); // Ustaw pustą listę zamiast przerywać pętlę
-            }
-
-            product.setItems(items);
+            // Pobranie nazwy produktu
+            String productName = element.findElement(productNameColumn).getText().trim();
+            Product product = new Product(type, productId, productName, new ArrayList<>());
             products.add(product);
+
         }
         return products;
+    }
+    public List<Product> fetchAllItemsForAllProducts(ProductType type) {
+        List<Product> products = fetchProducts(type); // Pobranie wszystkich produktów
+
+        for (Product product : products) {
+            // Otwórz stronę produktu, aby pobrać jego itemy
+            ItemPage itemPage = openItemPage(product.getName());
+            List<Item> items = itemPage.fetchItemsForProduct();
+
+            // Przypisz itemy do produktu
+            product.setItems(items);
+        }
+        return products; // Zwraca listę produktów z ich itemami
     }
 
 }

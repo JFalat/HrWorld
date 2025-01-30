@@ -15,7 +15,7 @@ public class ItemPage extends BasePage {
 
     private final WebDriverWait wait;
 
-    private By itemRows = By.xpath("//*[@id=\"Catalog\"]/table"); // Przykładowa struktura tabeli itemów
+    private By itemRows = By.xpath("//*[@id=\"Content\"]//table"); // Przykładowa struktura tabeli itemów
     private By itemNameColumn = By.xpath(".//td[1]"); // Nazwa itemu w pierwszej kolumnie
 
     public ItemPage(WebDriver driver, WebDriverWait wait) {

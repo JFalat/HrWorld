@@ -17,7 +17,7 @@ public class ItemTest extends BaseTest {
     @Test
     public void testFetchItems() {
         // Przejdź do strony konkretnego produktu (np. FI-SW-01)
-        driver.get("https://przyklady.javastart.pl/jpetstore/actions/Catalog.action?viewProduct=&productId=FI-SW-01");
+        driver.get("https://przyklady.javastart.pl/jpetstore/actions/Catalog.action?viewCategory=&categoryId=FISH");
 
         // Utwórz obiekt WebDriverWait
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
