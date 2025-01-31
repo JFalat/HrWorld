@@ -1,9 +1,9 @@
 package com.example.hrworld.pages;
 
 import com.example.hrworld.businessObject.Item;
+import com.example.hrworld.businessObject.ItemDetails;
 import com.example.hrworld.businessObject.Product;
 import com.example.hrworld.businessObject.ProductType;
-import lombok.RequiredArgsConstructor;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,7 +13,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ProductPage extends BasePage {
 
@@ -65,7 +64,7 @@ public class ProductPage extends BasePage {
         for (WebElement element : productElements) {
             // Pobranie Product ID (link)
             WebElement productLink = element.findElement(productIdColumn);
-            String productId = productLink.getText().trim();
+            String productId = productLink.getText();
             String productUrl = productLink.getAttribute("href"); // Możesz pobrać URL
 
             // Pobranie nazwy produktu
@@ -76,6 +75,13 @@ public class ProductPage extends BasePage {
         }
         return products;
     }
+    /**
+     * Pobiera wszystkie itemy dla wszystkich produktów danego typu.
+     *
+     * @param type Typ produktu (ProductType).
+     * @return Lista produktów z przypisanymi itemami.
+     */
+
     public List<Product> fetchAllItemsForAllProducts(ProductType type) {
         List<Product> products = fetchProducts(type); // Pobranie wszystkich produktów
 
@@ -89,5 +95,24 @@ public class ProductPage extends BasePage {
         }
         return products; // Zwraca listę produktów z ich itemami
     }
+    /**
+     * Otwiera stronę szczegółów produktu na podstawie identyfikatora produktu.
+     *
+     * @param productId Identyfikator produktu, którego stronę chcesz otworzyć.
+     * @return Instancja klasy ItemDetailPage.
+     */
+    public ItemDetailPage openItemDetailPage(String productId) {
+        // Znajdź link do produktu na podstawie jego identyfikatora
+        WebElement productLink = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//a[contains(@href, 'productId=" + productId + "')]")
+        ));
+
+        // Kliknij link, aby przejść do strony szczegółów produktu
+        productLink.click();
+
+        // Zwróć nową instancję ItemDetailPage
+        return new ItemDetailPage(driver, wait);
+    }
+
 
 }

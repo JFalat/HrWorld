@@ -5,8 +5,9 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Item {
+public class ItemDetails {
+    private String itemId;    // Unikalne ID itemu
     private String productId;
-    private String name;
-
+    private String description;
+    private double price;     // Cena itemu
 }
