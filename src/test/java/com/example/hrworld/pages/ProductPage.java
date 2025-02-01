@@ -1,7 +1,5 @@
 package com.example.hrworld.pages;
-
 import com.example.hrworld.businessObject.Item;
-import com.example.hrworld.businessObject.ItemDetails;
 import com.example.hrworld.businessObject.Product;
 import com.example.hrworld.businessObject.ProductType;
 import org.openqa.selenium.By;
@@ -45,7 +43,6 @@ public class ProductPage extends BasePage {
         // Zwróć instancję ItemPage
         return new ItemPage(driver, wait);
     }
-
     /**
      * Pobiera listę produktów z tabeli i zwraca je jako listę obiektów Product.
      *
@@ -65,16 +62,24 @@ public class ProductPage extends BasePage {
             // Pobranie Product ID (link)
             WebElement productLink = element.findElement(productIdColumn);
             String productId = productLink.getText();
-            String productUrl = productLink.getAttribute("href"); // Możesz pobrać URL
 
             // Pobranie nazwy produktu
             String productName = element.findElement(productNameColumn).getText().trim();
-            Product product = new Product(type, productId, productName, new ArrayList<>());
+
+            // Otwórz stronę szczegółów produktu i pobierz listę itemów
+            ItemPage itemPage = openItemDetailPage(productId);
+            List<Item> items = itemPage.fetchItemsForProduct();  // Pobranie itemów
+
+            // Tworzenie obiektu Product z pobranymi itemami
+            Product product = new Product(type, productId, productName, items);
             products.add(product);
 
+            // Powrót do listy produktów
+            driver.navigate().back();
         }
         return products;
     }
+
     /**
      * Pobiera wszystkie itemy dla wszystkich produktów danego typu.
      *
@@ -82,26 +87,7 @@ public class ProductPage extends BasePage {
      * @return Lista produktów z przypisanymi itemami.
      */
 
-    public List<Product> fetchAllItemsForAllProducts(ProductType type) {
-        List<Product> products = fetchProducts(type); // Pobranie wszystkich produktów
-
-        for (Product product : products) {
-            // Otwórz stronę produktu, aby pobrać jego itemy
-            ItemPage itemPage = openItemPage(product.getName());
-            List<Item> items = itemPage.fetchItemsForProduct();
-
-            // Przypisz itemy do produktu
-            product.setItems(items);
-        }
-        return products; // Zwraca listę produktów z ich itemami
-    }
-    /**
-     * Otwiera stronę szczegółów produktu na podstawie identyfikatora produktu.
-     *
-     * @param productId Identyfikator produktu, którego stronę chcesz otworzyć.
-     * @return Instancja klasy ItemDetailPage.
-     */
-    public ItemDetailPage openItemDetailPage(String productId) {
+    public ItemPage openItemDetailPage(String productId) {
         // Znajdź link do produktu na podstawie jego identyfikatora
         WebElement productLink = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//a[contains(@href, 'productId=" + productId + "')]")
@@ -111,8 +97,7 @@ public class ProductPage extends BasePage {
         productLink.click();
 
         // Zwróć nową instancję ItemDetailPage
-        return new ItemDetailPage(driver, wait);
+        return new ItemPage(driver, wait);
     }
-
 
 }

@@ -1,7 +1,7 @@
 package com.example.hrworld.test;
 
-import com.example.hrworld.businessObject.ItemDetails;
-import com.example.hrworld.pages.ItemDetailPage;
+import com.example.hrworld.businessObject.Item;
+import com.example.hrworld.pages.ItemPage;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -22,16 +22,16 @@ public class ItemTest extends BaseTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         // Utwórz obiekt strony ItemPage
-        ItemDetailPage itemPage = new ItemDetailPage(driver, wait);
+        ItemPage itemPage = new ItemPage(driver, wait);
 
         // Pobierz wszystkie itemy dla tego produktu
-        List<ItemDetails> items = itemPage.fetchItemsForProduct();
+        List<Item> items = itemPage.fetchItemsForProduct();
 
         // Sprawdź, czy lista itemów nie jest pusta
         assertFalse(items.isEmpty(), "Lista itemów jest pusta!");
 
         // Wypisz szczegóły każdego itemu
-        for (ItemDetails item : items) {
+        for (Item item : items) {
             System.out.println("Item ID: " + item.getItemId());
             System.out.println("Product ID: " + item.getProductId());
             System.out.println("Description: " + item.getDescription());

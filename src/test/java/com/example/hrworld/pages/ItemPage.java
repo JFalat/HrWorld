@@ -1,7 +1,6 @@
 package com.example.hrworld.pages;
 
 import com.example.hrworld.businessObject.Item;
-import com.example.hrworld.businessObject.ItemDetails;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -38,8 +37,14 @@ public class ItemPage extends BasePage {
                     // Pobierz dane z kolumn w wierszu
                     String itemId = row.findElement(By.xpath(".//td[1]")).getText().trim();
                     String productId = row.findElement(By.xpath(".//td[2]")).getText().trim();
+                    String description = row.findElement(By.xpath(".//td[3]")).getText().trim();
+                    // Pobranie ceny i usunięcie znaku "$"
+                    String priceText = row.findElement(By.xpath(".//td[4]")).getText().trim();
+                    priceText = priceText.replace("$", "").trim(); // Usunięcie znaku dolara
+                    double price = Double.parseDouble(priceText);
+
                     // Twórz obiekt Item
-                    return new Item(itemId, productId);
+                    return new Item(itemId, productId, description, price);
                 })
                 .collect(Collectors.toList());
     }
